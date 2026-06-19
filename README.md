@@ -193,3 +193,42 @@ export CLEARML_SERVING_URL=http://localhost:8090/serve/sentiment
 streamlit run ui/streamlit_app.py
 ```
 
+
+## 9. Артефакты 
+
+<img width="1280" height="882" alt="proj_1" src="https://github.com/user-attachments/assets/df48ac04-8d2e-4fd9-a654-9a9b2bd08bcf" />
+
+<img width="1280" height="881" alt="proj_2" src="https://github.com/user-attachments/assets/d359a269-0f2a-4d49-add1-7d063cc19c43" />
+
+
+<img width="1280" height="880" alt="proj_3" src="https://github.com/user-attachments/assets/30b1016f-1312-4b66-9e43-8fa1fc198349" />
+
+<img width="1280" height="878" alt="proj_4" src="https://github.com/user-attachments/assets/e3ff72d1-d3d1-49b2-8ee0-c259b36b80f7" />
+
+
+<img width="1280" height="882" alt="proj_5" src="https://github.com/user-attachments/assets/f506b0f8-fb48-43b9-9277-9e4307b2d183" />
+
+<img width="1280" height="880" alt="proj6" src="https://github.com/user-attachments/assets/63d584ae-d6df-4f13-832c-b7fd4f2147e0" />
+
+
+<img width="1280" height="881" alt="proj8" src="https://github.com/user-attachments/assets/a9f1b7f1-7535-49c6-b5d1-81791bd72c76" />
+<img width="1280" height="883" alt="proj7" src="https://github.com/user-attachments/assets/9a47e6de-e277-453d-b55f-38c63d43dbe8" />
+
+<img width="1280" height="875" alt="proj9" src="https://github.com/user-attachments/assets/1d8d5058-0d90-453d-b42b-db5daa1a9e04" />
+
+<img width="1280" height="881" alt="proj11" src="https://github.com/user-attachments/assets/3a925074-c527-4b49-baec-92a7cc156cfb" />
+<img width="1280" height="880" alt="proj10" src="https://github.com/user-attachments/assets/63a5f3e8-d8bb-44d3-a58d-d99c1437a91e" />
+
+
+
+<img width="1280" height="228" alt="proj12" src="https://github.com/user-attachments/assets/c3308e01-7346-42fb-bb01-c09e02a9ed99" />
+
+
+
+
+
+
+
+
+
+
