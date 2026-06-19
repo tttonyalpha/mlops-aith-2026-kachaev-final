@@ -1,0 +1,117 @@
+services:
+  apiserver:
+    image: allegroai/clearml:latest
+    command: apiserver
+    restart: unless-stopped
+    ports:
+      - "8008:8008"
+    environment:
+      CLEARML_ELASTIC_SERVICE_HOST: elasticsearch
+      CLEARML_ELASTIC_SERVICE_PORT: 9200
+      CLEARML_MONGODB_SERVICE_HOST: mongodb
+      CLEARML_MONGODB_SERVICE_PORT: 27017
+      CLEARML_REDIS_SERVICE_HOST: redis
+      CLEARML_REDIS_SERVICE_PORT: 6379
+    depends_on:
+      - elasticsearch
+      - mongodb
+      - redis
+    volumes:
+      - clearml-logs:/var/log/clearml
+      - clearml-config:/opt/clearml/config
+      - clearml-files:/mnt/fileserver
+
+  webserver:
+    image: allegroai/clearml:latest
+    command: webserver
+    restart: unless-stopped
+    ports:
+      - "18080:80"
+    environment:
+      CLEARML_APISERVER_HOST: http://localhost:8008
+      CLEARML_FILES_HOST: http://localhost:8081
+    depends_on:
+      - apiserver
+
+  fileserver:
+    image: allegroai/clearml:latest
+    command: fileserver
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      CLEARML_MONGODB_SERVICE_HOST: mongodb
+      CLEARML_MONGODB_SERVICE_PORT: 27017
+      CLEARML_REDIS_SERVICE_HOST: redis
+      CLEARML_REDIS_SERVICE_PORT: 6379
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - clearml-files:/mnt/fileserver
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.18
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    volumes:
+      - clearml-elastic:/usr/share/elasticsearch/data
+
+  mongodb:
+    image: mongo:4.4
+    restart: unless-stopped
+    volumes:
+      - clearml-mongo:/data/db
+
+  redis:
+    image: redis:6
+    restart: unless-stopped
+    volumes:
+      - clearml-redis:/data
+
+  agent:
+    image: allegroai/clearml-agent:latest
+    profiles: ["agent"]
+    command: daemon --queue students --foreground
+    environment:
+      CLEARML_API_HOST: http://host.docker.internal:8008
+      CLEARML_WEB_HOST: http://host.docker.internal:18080
+      CLEARML_FILES_HOST: http://host.docker.internal:8081
+      CLEARML_CONFIG_FILE: /root/clearml.conf
+    volumes:
+      - ~/.clearml:/root/.clearml
+      - ./clearml.docker.conf:/root/clearml.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/workspace
+    depends_on:
+      - apiserver
+
+  serving-inference:
+    image: allegroai/clearml-serving-inference:latest
+    profiles: ["serving"]
+    restart: unless-stopped
+    ports:
+      - "8090:8080"
+    environment:
+      CLEARML_API_HOST: http://host.docker.internal:8008
+      CLEARML_WEB_HOST: http://host.docker.internal:18080
+      CLEARML_FILES_HOST: http://host.docker.internal:8081
+      CLEARML_SERVING_TASK_ID: ${CLEARML_SERVING_TASK_ID:-}
+      CLEARML_CONFIG_FILE: /root/clearml.conf
+      CLEARML_EXTRA_PYTHON_PACKAGES: scikit-learn==1.5.1 joblib==1.4.2
+    volumes:
+      - ~/.clearml:/root/.clearml
+      - ./clearml.docker.conf:/root/clearml.conf:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  clearml-config:
+  clearml-elastic:
+  clearml-files:
+  clearml-logs:
+  clearml-mongo:
+  clearml-redis:
