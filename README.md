@@ -1,6 +1,6 @@
 # Курсовой проект ClearML Text Classification
 
-Этот проект реализует требуемый MLOps-жизненный цикл для небольшого классификатора тональности текста:
+Этот проект реализует MLOps-жизненный цикл для игрушечного классификатора тональности текста:
 
 1. версионированный ClearML Dataset,
 2. удаленное обучение через ClearML Agent,
@@ -92,12 +92,6 @@ cat outputs/dataset_id.txt
 caea8b717da64c0ba645cadecbf39ddd
 ```
 
-Чеклист:
-
-- Dataset появился в ClearML `Datasets`.
-- Dataset имеет версию `1.0.0`.
-- Обучение использует `Dataset.get(dataset_id=...)`.
-
 ## 5. Запуск двух экспериментов через агент
 
 ```bash
@@ -125,14 +119,6 @@ clearml-task --project mlops-aith-2026-kachaev --name sentiment-linearsvc-agent 
 - `231ce563bef246078ac128745ff23999` - `sentiment-logreg-agent`
 - `006e49c6e6c84325911800db5542de81` - `sentiment-linearsvc-agent`
 
-Чеклист в ClearML UI:
-
-- Обе задачи запущены через agent queue `students`.
-- Гиперпараметры.
-- `accuracy` и `f1` залогированы.
-- Confusion matrix image залогирован.
-- Артефакт `model_joblib` существует.
-- ClearML model id напечатан в логах task.
 
 ## 6. Публикация лучшей модели в Model Registry
 
